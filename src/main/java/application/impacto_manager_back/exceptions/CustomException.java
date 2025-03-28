@@ -3,7 +3,6 @@ package application.impacto_manager_back.exceptions;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.lang.Error;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 public class CustomException extends RuntimeException {
 
-    private final List<java.lang.Error> errors = new ArrayList<>();
+    private final List<Error> errors = new ArrayList<>();
 
     public CustomException(Class<?> clazz) {
         super("Erro na classe " + clazz.getSimpleName());
@@ -21,7 +20,7 @@ public class CustomException extends RuntimeException {
         super(error, e);
     }
 
-    public void addErrors(List<java.lang.Error> errors) {
+    public void addErrors(List<Error> errors) {
         this.errors.addAll(errors);
     }
 
@@ -30,8 +29,12 @@ public class CustomException extends RuntimeException {
         return this;
     }
 
-    public CustomException(String mesage){
-        super(mesage);
+    public CustomException(String message){
+        super(message);
     }
 
+    public CustomException(Error error) {
+        super(error.getMessage());
+        this.errors.add(error);
+    }
 }
