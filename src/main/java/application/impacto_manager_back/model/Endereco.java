@@ -1,5 +1,6 @@
 package application.impacto_manager_back.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,6 +23,7 @@ import lombok.NoArgsConstructor;
 public class Endereco {
 
     @Id
+    @JsonIgnore
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -43,6 +45,7 @@ public class Endereco {
     private String complemento;
 
     @OneToOne
+    @JsonIgnore
     @JoinColumn(name = "aluno_id")
     private Aluno aluno;
 }

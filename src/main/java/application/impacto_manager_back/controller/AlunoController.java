@@ -25,14 +25,14 @@ import java.util.List;
 import static org.springframework.beans.BeanUtils.copyProperties;
 
 @RestController
-@RequestMapping("/aluno")
+@RequestMapping("/api/aluno")
 @RequiredArgsConstructor
 @Tag(name = "Aluno", description = "Endpoint para gerenciamento de alunos")
 public class AlunoController {
     private final AlunoService service;
 
     @BuscarTodos
-    @GetMapping
+    @GetMapping("")
     public List<Aluno> findAll() {
         return service.findAll();
     }
