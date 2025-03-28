@@ -6,7 +6,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 public interface AlunoDocs {
-
     @Target(ElementType.METHOD)
     @Retention(RetentionPolicy.RUNTIME)
     @AlunoOperation(summary = "Listar todos os alunos", description = "Retorna uma lista paginada de todos os alunos cadastrados")

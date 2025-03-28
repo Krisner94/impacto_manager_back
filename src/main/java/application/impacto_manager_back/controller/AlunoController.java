@@ -5,7 +5,6 @@ import application.impacto_manager_back.config.openApi.AlunoDocs.BuscarPorId;
 import application.impacto_manager_back.config.openApi.AlunoDocs.BuscarTodos;
 import application.impacto_manager_back.config.openApi.AlunoDocs.Criar;
 import application.impacto_manager_back.config.openApi.AlunoDocs.Excluir;
-import application.impacto_manager_back.config.openApi.AlunoOperation;
 import application.impacto_manager_back.model.Aluno;
 import application.impacto_manager_back.service.AlunoService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -26,7 +25,7 @@ import java.util.List;
 import static org.springframework.beans.BeanUtils.copyProperties;
 
 @RestController
-@RequestMapping("/api/aluno")
+@RequestMapping("/aluno")
 @RequiredArgsConstructor
 @Tag(name = "Aluno", description = "Endpoint para gerenciamento de alunos")
 public class AlunoController {
