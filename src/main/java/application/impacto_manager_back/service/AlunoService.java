@@ -27,7 +27,7 @@ public class AlunoService {
         return repository.findByCpf(cpf);
     }
 
-    public List<Aluno> findByNome(String nome) {
+    public List<Aluno> findByName(String nome) {
         return repository.findByNome(nome);
     }
 

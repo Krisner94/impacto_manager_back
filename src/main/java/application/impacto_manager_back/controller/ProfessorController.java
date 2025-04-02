@@ -5,10 +5,9 @@ import application.impacto_manager_back.config.openApi.DataDocs.Delete;
 import application.impacto_manager_back.config.openApi.DataDocs.FindAll;
 import application.impacto_manager_back.config.openApi.DataDocs.FindByCPF;
 import application.impacto_manager_back.config.openApi.DataDocs.FindById;
-import application.impacto_manager_back.config.openApi.DataDocs.FindByName;
 import application.impacto_manager_back.config.openApi.DataDocs.Update;
-import application.impacto_manager_back.model.Aluno;
-import application.impacto_manager_back.service.AlunoService;
+import application.impacto_manager_back.model.Professor;
+import application.impacto_manager_back.service.ProfessorService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -27,56 +27,40 @@ import java.util.List;
 import static org.springframework.beans.BeanUtils.copyProperties;
 
 @RestController
-@RequestMapping("/api/aluno")
+@RequestMapping("/api/professor")
 @RequiredArgsConstructor
-@Tag(name = "Aluno", description = "Endpoint para gerenciamento de alunos")
-public class AlunoController {
-	private final AlunoService service;
+@Tag(name = "Professor", description = "Endpoint para gerenciamento de professores")
+public class ProfessorController {
+	private final ProfessorService service;
 	
 	@FindAll
-	@GetMapping("")
-	public List<Aluno> findAll() {
+	@GetMapping("/")
+	public List<Professor> findAll() {
 		return service.findAll();
 	}
 	
 	@FindById
 	@GetMapping("/{id}")
-	public Aluno findById(@PathVariable(value = "id") Long id) {
+	public Professor findById(@PathVariable(value = "id") Long id) {
 		return service.findById(id);
-	}
-	
-	@FindByName
-	@GetMapping("/{nome}")
-	public List<Aluno> findByName(@PathVariable(value = "nome") String nome) {
-		return service.findByName(nome);
-	}
-	
-	@FindByCPF
-	@GetMapping("/{cpf}")
-	public List<Aluno> findByCpf(@PathVariable(value = "cpf") String cpf) {
-		return service.findByCpf(cpf);
 	}
 	
 	@Create
 	@PostMapping
-	public Aluno save(@RequestBody Aluno aluno) {
-		service.save(aluno);
-		return ResponseEntity.status(HttpStatus.CREATED).body(aluno).getBody();
+	public Professor create(@RequestBody Professor professor) {
+		return service.create(professor);
 	}
 	
 	@Update
 	@PutMapping
-	public Aluno update(@RequestBody Aluno aluno) {
-		Aluno newAluno = new Aluno();
-		copyProperties(aluno, newAluno);
-		service.save(newAluno);
-		return ResponseEntity.status(HttpStatus.CREATED).body(newAluno).getBody();
+	public Professor update(@RequestBody Professor professor) {
+		return ResponseEntity.status(HttpStatus.CREATED).body(service.update(professor.getId(), professor)).getBody();
 	}
 	
 	@Delete
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> delete(@PathVariable(value = "id") Long id) {
+	public void delete(@PathVariable(value = "id") Long id) {
 		service.delete(id);
-		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+		ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 }

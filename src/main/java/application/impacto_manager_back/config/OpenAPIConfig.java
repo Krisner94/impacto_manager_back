@@ -11,33 +11,33 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class OpenAPIConfig {
-
-    @Bean
-    public OpenAPI customOpenAPI() {
-        return new OpenAPI()
-            .info(new Info()
-                .title("Impacto Manager")
-                .version("v1")
-                .description("Sistema de gerenciamento de escola de esportes")
-                .license(new License()
-                    .name("Apache 2.0")
-                    .url("https://www.apache.org/licenses/LICENSE-2.0")))
-            .components(new Components()
-                // Respostas padrão reutilizáveis
-                .addResponses("badRequest", createApiResponse("BAD REQUEST"))
-                .addResponses("unauthorized", createApiResponse("UNAUTHORIZED"))
-                .addResponses("notFound", createApiResponse("NOT FOUND"))
-                .addResponses("internalError", createApiResponse("INTERNAL ERROR"))
-
-                // Configuração de segurança (se aplicável)
-                .addSecuritySchemes("bearerAuth",
-                    new SecurityScheme()
-                        .type(SecurityScheme.Type.HTTP)
-                        .scheme("bearer")
-                        .bearerFormat("JWT")));
-    }
-
-    private ApiResponse createApiResponse(String description) {
-        return new ApiResponse().description(description);
-    }
+	
+	@Bean
+	public OpenAPI customOpenAPI() {
+		return new OpenAPI()
+		  .info(new Info()
+			.title("Impacto Manager")
+			.version("v1")
+			.description("Sistema de gerenciamento de escola de esportes")
+			.license(new License()
+			  .name("Apache 2.0")
+			  .url("https://www.apache.org/licenses/LICENSE-2.0")))
+		  .components(new Components()
+			// Respostas padrão reutilizáveis
+			.addResponses("badRequest", createApiResponse("BAD REQUEST"))
+			.addResponses("unauthorized", createApiResponse("UNAUTHORIZED"))
+			.addResponses("notFound", createApiResponse("NOT FOUND"))
+			.addResponses("internalError", createApiResponse("INTERNAL ERROR"))
+			
+			// Configuração de segurança (se aplicável)
+			.addSecuritySchemes("bearerAuth",
+			  new SecurityScheme()
+				.type(SecurityScheme.Type.HTTP)
+				.scheme("bearer")
+				.bearerFormat("JWT")));
+	}
+	
+	private ApiResponse createApiResponse(String description) {
+		return new ApiResponse().description(description);
+	}
 }
