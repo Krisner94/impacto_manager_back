@@ -1,0 +1,55 @@
+package application.impacto_manager_back.controller;
+
+import application.impacto_manager_back.config.openApi.DataDocs.Create;
+import application.impacto_manager_back.config.openApi.DataDocs.Delete;
+import application.impacto_manager_back.config.openApi.DataDocs.FindAll;
+import application.impacto_manager_back.config.openApi.DataDocs.FindById;
+import application.impacto_manager_back.config.openApi.DataDocs.Update;
+import application.impacto_manager_back.model.Turma;
+import application.impacto_manager_back.service.TurmaService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/turma")
+@RequiredArgsConstructor
+@Tag(name = "Turma", description = "Endpoint para gerenciamento de turmas")
+public class TurmaController {
+    private final TurmaService service;
+	
+	@FindAll
+    @GetMapping("/")
+    public List<Turma> findAll() {
+        return service.findAll();
+    }
+	
+	@FindById
+    @GetMapping("/{id}")
+    public Turma findById(@PathVariable(value = "id") Long id) {
+        return service.findById(id);
+    }
+	
+	@Create
+    @PostMapping
+    public Turma create(@RequestBody Turma turma) {
+        return service.create(turma);
+    }
+	
+	@Update
+    @PutMapping
+    public Turma update(@RequestBody Turma turma) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.update(turma.getId(), turma)).getBody();
+    }
+	
+	@Delete
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable(value = "id") Long id) {
+        service.delete(id);
+        ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+}

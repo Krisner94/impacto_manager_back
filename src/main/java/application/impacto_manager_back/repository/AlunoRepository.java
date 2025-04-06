@@ -11,27 +11,6 @@ import java.util.Optional;
 
 @Repository
 public interface AlunoRepository extends JpaRepository<Aluno, Long> {
-
     List<Aluno> findByNome(String nome);
     List<Aluno> findByCpf(String cpf);
-
-    @EntityGraph(attributePaths = {"endereco", "responsavel", "turmas"})
-    @Override
-    List<Aluno> findAll();
-
-    @EntityGraph(attributePaths = {"endereco", "responsavel", "turmas"})
-    @Override
-    Optional<Aluno> findById(Long id);
-
-    @EntityGraph(attributePaths = {"endereco", "responsavel", "turmas"})
-    List<Aluno> findByNomeContainingIgnoreCase(String nome);
-
-    @EntityGraph(attributePaths = {"endereco", "responsavel", "turmas"})
-    List<Aluno> findByCpfContaining(String cpf);
-
-    @Query("SELECT DISTINCT a FROM Aluno a " +
-        "LEFT JOIN FETCH a.endereco " +
-        "LEFT JOIN FETCH a.responsavel " +
-        "LEFT JOIN FETCH a.turmas")
-    List<Aluno> findAllComRelacionamentos();
 }

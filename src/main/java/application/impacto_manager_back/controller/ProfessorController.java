@@ -3,7 +3,6 @@ package application.impacto_manager_back.controller;
 import application.impacto_manager_back.config.openApi.DataDocs.Create;
 import application.impacto_manager_back.config.openApi.DataDocs.Delete;
 import application.impacto_manager_back.config.openApi.DataDocs.FindAll;
-import application.impacto_manager_back.config.openApi.DataDocs.FindByCPF;
 import application.impacto_manager_back.config.openApi.DataDocs.FindById;
 import application.impacto_manager_back.config.openApi.DataDocs.Update;
 import application.impacto_manager_back.model.Professor;
@@ -19,12 +18,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-
-import static org.springframework.beans.BeanUtils.copyProperties;
 
 @RestController
 @RequestMapping("/api/professor")

@@ -8,7 +8,9 @@ import application.impacto_manager_back.config.openApi.DataDocs.FindById;
 import application.impacto_manager_back.config.openApi.DataDocs.FindByName;
 import application.impacto_manager_back.config.openApi.DataDocs.Update;
 import application.impacto_manager_back.model.Aluno;
+import application.impacto_manager_back.model.Turma;
 import application.impacto_manager_back.service.AlunoService;
+import application.impacto_manager_back.service.TurmaService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.beans.BeanUtils.copyProperties;
@@ -32,11 +35,13 @@ import static org.springframework.beans.BeanUtils.copyProperties;
 @Tag(name = "Aluno", description = "Endpoint para gerenciamento de alunos")
 public class AlunoController {
 	private final AlunoService service;
+	private final TurmaService turmaService;
 	
 	@FindAll
 	@GetMapping("")
-	public List<Aluno> findAll() {
-		return service.findAll();
+	public ResponseEntity<List<Aluno>> findAll() {
+		List<Aluno> alunos = service.findAll();
+		return ResponseEntity.ok(alunos);
 	}
 	
 	@FindById
@@ -46,13 +51,13 @@ public class AlunoController {
 	}
 	
 	@FindByName
-	@GetMapping("/{nome}")
+	@GetMapping("/nome/{nome}")
 	public List<Aluno> findByName(@PathVariable(value = "nome") String nome) {
 		return service.findByName(nome);
 	}
 	
 	@FindByCPF
-	@GetMapping("/{cpf}")
+	@GetMapping("/cpf/{cpf}")
 	public List<Aluno> findByCpf(@PathVariable(value = "cpf") String cpf) {
 		return service.findByCpf(cpf);
 	}
@@ -60,18 +65,32 @@ public class AlunoController {
 	@Create
 	@PostMapping
 	public Aluno save(@RequestBody Aluno aluno) {
-		service.save(aluno);
+		service.create(aluno);
 		return ResponseEntity.status(HttpStatus.CREATED).body(aluno).getBody();
 	}
 	
 	@Update
 	@PutMapping
-	public Aluno update(@RequestBody Aluno aluno) {
-		Aluno newAluno = new Aluno();
-		copyProperties(aluno, newAluno);
-		service.save(newAluno);
-		return ResponseEntity.status(HttpStatus.CREATED).body(newAluno).getBody();
+	public ResponseEntity<?> update(@RequestBody Aluno aluno) {
+		if (aluno.getId() == null) {
+			return ResponseEntity.badRequest().body("ID do aluno não pode ser nulo");
+		}
+		
+		Aluno existente = service.findById(aluno.getId());
+		existente.setEndereco(aluno.getEndereco());
+		existente.setResponsavel(aluno.getResponsavel());
+		
+		if (aluno.getTurmas() != null) {
+			List<Turma> turmasAtualizadas = aluno.getTurmas().stream()
+			  .map(t -> turmaService.findById(t.getId()))
+			  .toList();
+			existente.setTurmas(turmasAtualizadas);
+		}
+		
+		return ResponseEntity.ok(service.update(existente));
 	}
+	
+	
 	
 	@Delete
 	@DeleteMapping("/{id}")
