@@ -26,12 +26,8 @@ public class AlunoService {
 		  .orElseThrow(() -> new RuntimeException("Aluno não encontrado com id: " + id));
 	}
 	
-	public List<Aluno> findByCpf(String cpf) {
-		return repository.findByCpf(cpf);
-	}
-	
-	public List<Aluno> findByName(String nome) {
-		return repository.findByNome(nome);
+	public List<Aluno> findByNomeOrCPF(String value) {
+		return repository.findByNameOrCPF(value);
 	}
 	
 	public Aluno create(Aluno aluno) {
@@ -39,14 +35,7 @@ public class AlunoService {
 	}
 	
 	public Aluno update(Aluno aluno) {
-		return repository.findById(aluno.getId())
-		  .map(existingAluno -> {
-			  copyProperties(aluno, existingAluno, "id", "responsavel", "turmas");
-			  existingAluno.setEndereco(aluno.getEndereco());
-			  existingAluno.setResponsavel(new ArrayList<>(aluno.getResponsavel()));
-			  existingAluno.setTurmas(new ArrayList<>(aluno.getTurmas()));
-			  return repository.save(existingAluno);
-		  }).orElseThrow(() -> new RuntimeException("Aluno não encontrado com id: " + aluno.getId()));
+		return repository.save(aluno);
 	}
 	
 	

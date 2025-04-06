@@ -3,7 +3,6 @@ package application.impacto_manager_back.controller;
 import application.impacto_manager_back.config.openApi.DataDocs.Create;
 import application.impacto_manager_back.config.openApi.DataDocs.Delete;
 import application.impacto_manager_back.config.openApi.DataDocs.FindAll;
-import application.impacto_manager_back.config.openApi.DataDocs.FindByCPF;
 import application.impacto_manager_back.config.openApi.DataDocs.FindById;
 import application.impacto_manager_back.config.openApi.DataDocs.FindByName;
 import application.impacto_manager_back.config.openApi.DataDocs.Update;
@@ -24,10 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import static org.springframework.beans.BeanUtils.copyProperties;
 
 @RestController
 @RequestMapping("/api/aluno")
@@ -51,15 +47,9 @@ public class AlunoController {
 	}
 	
 	@FindByName
-	@GetMapping("/nome/{nome}")
-	public List<Aluno> findByName(@PathVariable(value = "nome") String nome) {
-		return service.findByName(nome);
-	}
-	
-	@FindByCPF
-	@GetMapping("/cpf/{cpf}")
-	public List<Aluno> findByCpf(@PathVariable(value = "cpf") String cpf) {
-		return service.findByCpf(cpf);
+	@GetMapping("/find/{value}")
+	public List<Aluno> findByNomeOrCPF(@PathVariable(value = "value") String value) {
+		return service.findByNomeOrCPF(value);
 	}
 	
 	@Create
@@ -69,27 +59,13 @@ public class AlunoController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(aluno).getBody();
 	}
 	
+	
 	@Update
 	@PutMapping
-	public ResponseEntity<?> update(@RequestBody Aluno aluno) {
-		if (aluno.getId() == null) {
-			return ResponseEntity.badRequest().body("ID do aluno não pode ser nulo");
-		}
-		
-		Aluno existente = service.findById(aluno.getId());
-		existente.setEndereco(aluno.getEndereco());
-		existente.setResponsavel(aluno.getResponsavel());
-		
-		if (aluno.getTurmas() != null) {
-			List<Turma> turmasAtualizadas = aluno.getTurmas().stream()
-			  .map(t -> turmaService.findById(t.getId()))
-			  .toList();
-			existente.setTurmas(turmasAtualizadas);
-		}
-		
-		return ResponseEntity.ok(service.update(existente));
+	public ResponseEntity<Aluno> update(@RequestBody Aluno aluno) {
+		Aluno novoAluno = service.update(aluno);
+		return ResponseEntity.ok(novoAluno);
 	}
-	
 	
 	
 	@Delete
