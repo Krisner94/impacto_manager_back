@@ -4,12 +4,9 @@ import application.impacto_manager_back.config.openApi.DataDocs.Create;
 import application.impacto_manager_back.config.openApi.DataDocs.Delete;
 import application.impacto_manager_back.config.openApi.DataDocs.FindAll;
 import application.impacto_manager_back.config.openApi.DataDocs.FindById;
-import application.impacto_manager_back.config.openApi.DataDocs.FindByName;
 import application.impacto_manager_back.config.openApi.DataDocs.Update;
-import application.impacto_manager_back.model.Aluno;
-import application.impacto_manager_back.model.Turma;
-import application.impacto_manager_back.service.AlunoService;
-import application.impacto_manager_back.service.TurmaService;
+import application.impacto_manager_back.model.Professor;
+import application.impacto_manager_back.service.ProfessorService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,52 +23,40 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/aluno")
+@RequestMapping("/api/professor")
 @RequiredArgsConstructor
-@Tag(name = "Aluno", description = "Endpoint para gerenciamento de alunos")
-public class AlunoController {
-	private final AlunoService service;
-	private final TurmaService turmaService;
+@Tag(name = "Professor", description = "Endpoint para gerenciamento de professores")
+public class ProfessorController {
+	private final ProfessorService service;
 	
 	@FindAll
-	@GetMapping("")
-	public ResponseEntity<List<Aluno>> findAll() {
-		List<Aluno> alunos = service.findAll();
-		return ResponseEntity.ok(alunos);
+	@GetMapping("/")
+	public List<Professor> findAll() {
+		return service.findAll();
 	}
 	
 	@FindById
 	@GetMapping("/{id}")
-	public Aluno findById(@PathVariable(value = "id") Long id) {
+	public Professor findById(@PathVariable(value = "id") Long id) {
 		return service.findById(id);
-	}
-	
-	@FindByName
-	@GetMapping("/find/{value}")
-	public List<Aluno> findByNomeOrCPF(@PathVariable(value = "value") String value) {
-		return service.findByNomeOrCPF(value);
 	}
 	
 	@Create
 	@PostMapping
-	public Aluno save(@RequestBody Aluno aluno) {
-		service.create(aluno);
-		return ResponseEntity.status(HttpStatus.CREATED).body(aluno).getBody();
+	public Professor create(@RequestBody Professor professor) {
+		return service.create(professor);
 	}
-	
 	
 	@Update
 	@PutMapping
-	public ResponseEntity<Aluno> update(@RequestBody Aluno aluno) {
-		Aluno novoAluno = service.update(aluno);
-		return ResponseEntity.ok(novoAluno);
+	public Professor update(@RequestBody Professor professor) {
+		return ResponseEntity.status(HttpStatus.CREATED).body(service.update(professor.getId(), professor)).getBody();
 	}
-	
 	
 	@Delete
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> delete(@PathVariable(value = "id") Long id) {
+	public void delete(@PathVariable(value = "id") Long id) {
 		service.delete(id);
-		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+		ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 }

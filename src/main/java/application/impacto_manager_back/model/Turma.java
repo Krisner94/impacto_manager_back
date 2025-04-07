@@ -1,6 +1,7 @@
 package application.impacto_manager_back.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
