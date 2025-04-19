@@ -1,11 +1,15 @@
 package application.impacto_manager_back.security.config.controller;
 
+import application.impacto_manager_back.config.openApi.DataDocs.Create;
 import application.impacto_manager_back.security.model.User;
+import application.impacto_manager_back.security.model.UserDto;
 import application.impacto_manager_back.security.service.UserService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import static org.springframework.beans.BeanUtils.copyProperties;
 
 @RestController
 @RequestMapping("/user")
@@ -16,8 +20,9 @@ public class UserController {
 		this.service = service;
 	}
 	
+	@Create
 	@PostMapping("/register")
 	public User registerUser(@RequestBody User user) {
-		return service.newUser(user.getUsername(), user.getPassword(), user.getRole());
+		return service.newUser(user);
 	}
 }
