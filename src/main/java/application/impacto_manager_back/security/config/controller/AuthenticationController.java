@@ -13,7 +13,7 @@ public class AuthenticationController {
         this.service = service;
     }
 
-    @PostMapping("authenticate")
+    @PostMapping("login")
     public String  authenticate(Authentication authentication) {
         return service.authenticate(authentication);
     }
