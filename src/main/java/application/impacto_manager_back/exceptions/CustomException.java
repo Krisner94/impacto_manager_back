@@ -1,25 +1,28 @@
 package application.impacto_manager_back.exceptions;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.http.HttpStatus;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
+import java.io.Serial;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class CustomException extends RuntimeException {
-	private final String title;
-	private final String message;
-	private final HttpStatus httpStatus;
-	
-	public CustomException(String title, String message, HttpStatus httpStatus) {
-		this.title = title;
-		this.message = message;
-		this.httpStatus = httpStatus;
-	}
+	@Serial
+	private static final long serialVersionUID = -7034897190745766940L;
+	private String title;
+	private String message;
+	private HttpStatus httpStatus;
+	private Error error;
 	
 	public CustomException(Error error) {
 		this.title = error.getTitle();
-		this.httpStatus = error.getHttpStatus();
 		this.message = error.getMessage();
+		this.httpStatus = error.getHttpStatus();
 	}
 }

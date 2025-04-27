@@ -10,11 +10,11 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(CustomException.class)
 	public ResponseEntity<Error> handleCustomException(CustomException ex) {
 		return ResponseEntity.status(ex.getHttpStatus()).body(
-		  Error.builder()
-			.title(ex.getTitle())
-			.message(ex.getMessage())
-			.httpStatus(ex.getHttpStatus())
-			.build()
+			Error.builder()
+				.title(ex.getMessage())
+				.message(ex.getMessage())
+				.httpStatus(ex.getHttpStatus())
+				.build()
 		);
 	}
 }
