@@ -1,40 +1,28 @@
 package application.impacto_manager_back.exceptions;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.http.HttpStatus;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.Serial;
 
 @Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class CustomException extends RuntimeException {
-
-    private final List<Error> errors = new ArrayList<>();
-
-    public CustomException(Class<?> clazz) {
-        super("Erro na classe " + clazz.getSimpleName());
-    }
-
-    public CustomException(String error, ReflectiveOperationException e) {
-        super(error, e);
-    }
-
-    public void addErrors(List<Error> errors) {
-        this.errors.addAll(errors);
-    }
-
-    public CustomException addError(Error error) {
-        this.errors.add(error);
-        return this;
-    }
-
-    public CustomException(String message){
-        super(message);
-    }
-
-    public CustomException(Error error) {
-        super(error.getMessage());
-        this.errors.add(error);
-    }
+	@Serial
+	private static final long serialVersionUID = -7034897190745766940L;
+	private String title;
+	private String message;
+	private HttpStatus httpStatus;
+	private Error error;
+	
+	public CustomException(Error error) {
+		this.title = error.getTitle();
+		this.message = error.getMessage();
+		this.httpStatus = error.getHttpStatus();
+	}
 }
