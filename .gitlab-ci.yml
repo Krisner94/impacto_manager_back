@@ -1,5 +1,6 @@
 stages:
   - validate
+  - security
 
 commitlint:
   stage: validate
@@ -17,3 +18,25 @@ commitlint:
     - merge_requests
     - main
     - develop
+
+dependency-check:
+  image: owasp/dependency-check:latest
+  stage: security
+  variables:
+    PROJECT_NAME: "springboot-app"
+  script:
+    - /usr/share/dependency-check/bin/dependency-check.sh \
+        --project "$PROJECT_NAME" \
+        --scan . \
+        --format "HTML" \
+        --out dependency-check-report
+  artifacts:
+    paths:
+      - dependency-check-report
+    when: always
+    expire_in: 1 week
+  only:
+    - merge_requests
+    - main
+    - develop
+  allow_failure: true
