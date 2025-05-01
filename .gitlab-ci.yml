@@ -1,0 +1,60 @@
+stages:
+  - build
+  - test
+  - sonar
+  - dependency-check
+  - container-scan
+
+build:
+  stage: build
+  image: maven:3.9.4-eclipse-temurin-21
+  WORKDIR: /build
+  COPY . .
+  script:
+    - mvn clean package -DskipTests
+
+test:
+  stage: test
+  image: maven:3.9.4-eclipse-temurin-21
+  WORKDIR: /build
+  COPY . .
+  script:
+    - mvn test
+
+sonar:
+  stage: sonar
+  image: sonarsource/sonar-scanner-cli:latest
+  variables:
+    SONAR_HOST_URL: "SEU_ENDPOINT_SONARQUBE"
+    SONAR_LOGIN: "SEU_TOKEN_SONARQUBE"
+    SONAR_PROJECT_KEY: "SEU_PROJETO_KEY_SONARQUBE"
+  script:
+    - sonar-scanner -Dsonar.projectKey=$SONAR_PROJECT_KEY -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_LOGIN
+  allow_failure: true
+
+dependency-check:
+  stage: dependency-check
+  image: owasp/dependency-check:6.5.3-jdk17
+  variables:
+    MAVEN_HOME: /usr/local/apache-maven
+  script:
+    - mvn dependency-check:check
+  artifacts:
+    reports:
+      dependency_check: target/dependency-check-report.html
+
+container-scan:
+  stage: container-scan
+  image: aquasecurity/trivy:latest
+  variables:
+    TRIVY_SEVERITY: "HIGH,CRITICAL"
+    DOCKERFILE_PATH: Dockerfile
+    IMAGE_NAME: "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA"
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+  script:
+    - docker build -f "$DOCKERFILE_PATH" -t "$IMAGE_NAME" .
+    - trivy image --exit-code 1 --severity "$TRIVY_SEVERITY" "$IMAGE_NAME"
+  allow_failure: true
