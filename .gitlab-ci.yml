@@ -1,8 +1,11 @@
 stages:
   - build
+  - test
+  - quality
   - validate
   - security
-  - deploy
+  - deploy-test
+  - notification
 
 maven-build:
   image: maven:3.9.4-eclipse-temurin-21
@@ -12,6 +15,32 @@ maven-build:
     paths:
       - target/gitlab-ci-demo.jar
 
+maven-test:
+  image: maven:3.9.4-eclipse-temurin-21
+  stage: test
+  script:
+    - mvn test
+  artifacts:
+    when: always
+    reports:
+      junit: target/surefire-reports/*.xml
+  only:
+    - merge_requests
+    - main
+    - dev
+
+code-quality:
+  image: maven:3.9.4-eclipse-temurin-21
+  stage: validate
+  script:
+    - mvn checkstyle:check
+    - mvn pmd:check
+    - mvn spotbugs:check
+  only:
+    - merge_requests
+    - main
+    - develop
+  allow_failure: true
 
 dependency-check:
   image: owasp/dependency-check:latest
@@ -34,3 +63,19 @@ dependency-check:
     - main
     - develop
   allow_failure: true
+
+deploy-test:
+  image: alpine:latest
+  stage: deploy
+  script:
+    - echo "Deploying to test environment..."
+    - ssh user@server "docker pull registry.gitlab.com/impacto-manager/back/impacto_manager_back:latest && docker-compose up -d"
+  only:
+    - dev
+
+notifications:
+  image: curlimages/curl:latest
+  stage: notification
+  script:
+    - curl -X POST -H 'Content-type: application/json' --data '{"text":"Pipeline finalizada com sucesso!"}' https://hooks.slack.com/services/SEU/WEBHOOK/URL
+  when: always
