@@ -1,6 +1,17 @@
 stages:
+  - build
   - validate
   - security
+  - deploy
+
+maven-build:
+  image: maven:4-jdk-21
+  stage: build
+  script: "mvn clean install"
+  artifacts:
+    paths:
+      - target/gitlab-ci-demo.jar
+
 
 dependency-check:
   image: owasp/dependency-check:latest
