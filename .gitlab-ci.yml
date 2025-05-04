@@ -88,8 +88,7 @@ notifications:
   stage: notification
   script:
     - >
-    curl -X POST -H "Content-type: application/json"
-    --data '{"text":"Pipeline finalizada com sucesso!"}'
-    $SLACK_WEBHOOK_URL
-
+      curl -X POST -H "Content-type: application/json"
+      --data '{"text":"Pipeline finalizada com sucesso!"}'
+      $SLACK_WEBHOOK_URL
   when: always
