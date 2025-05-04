@@ -2,7 +2,6 @@ stages:
   - build
   - test
   - quality
-  - validate
   - security
   - deploy-test
   - notification
@@ -14,6 +13,10 @@ maven-build:
   artifacts:
     paths:
       - target/gitlab-ci-demo.jar
+  only:
+    - merge_requests
+    - main
+    - dev
 
 maven-test:
   image: maven:3.9.4-eclipse-temurin-21
@@ -31,7 +34,7 @@ maven-test:
 
 code-quality:
   image: maven:3.9.4-eclipse-temurin-21
-  stage: validate
+  stage: quality
   script:
     - mvn checkstyle:check
     - mvn pmd:check
@@ -39,7 +42,7 @@ code-quality:
   only:
     - merge_requests
     - main
-    - develop
+    - dev
   allow_failure: true
 
 dependency-check:
@@ -49,10 +52,10 @@ dependency-check:
     PROJECT_NAME: "springboot-app"
   script:
     - /usr/share/dependency-check/bin/dependency-check.sh \
-      --project "$PROJECT_NAME" \
-      --scan . \
-      --format "HTML" \
-      --out dependency-check-report
+        --project "$PROJECT_NAME" \
+        --scan . \
+        --format "HTML" \
+        --out dependency-check-report
   artifacts:
     paths:
       - dependency-check-report
@@ -61,12 +64,19 @@ dependency-check:
   only:
     - merge_requests
     - main
-    - develop
+    - dev
   allow_failure: true
 
 deploy-test:
   image: alpine:latest
-  stage: deploy
+  stage: deploy-test
+  before_script:
+    - apk add --no-cache openssh
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan server >> ~/.ssh/known_hosts
   script:
     - echo "Deploying to test environment..."
     - ssh user@server "docker pull registry.gitlab.com/impacto-manager/back/impacto_manager_back:latest && docker-compose up -d"
@@ -77,5 +87,5 @@ notifications:
   image: curlimages/curl:latest
   stage: notification
   script:
-    - curl -X POST -H 'Content-type: application/json' --data '{"text":"Pipeline finalizada com sucesso!"}' https://hooks.slack.com/services/SEU/WEBHOOK/URL
+    - curl -X POST -H 'Content-type: application/json' --data '{"text":"Pipeline finalizada com sucesso!"}' $SLACK_WEBHOOK_URL
   when: always
