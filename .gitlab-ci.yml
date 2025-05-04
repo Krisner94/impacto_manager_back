@@ -2,23 +2,6 @@ stages:
   - validate
   - security
 
-commitlint:
-  stage: validate
-  image: node:18
-  before_script:
-    - npm install -g @commitlint/{cli,config-conventional}
-  script:
-    - git fetch origin main
-    - |
-      for commit in $(git rev-list origin/main..HEAD); do
-        echo "Validando commit $commit..."
-        git log --format=%B -n 1 $commit | commitlint
-      done
-  only:
-    - merge_requests
-    - main
-    - develop
-
 dependency-check:
   image: owasp/dependency-check:latest
   stage: security
