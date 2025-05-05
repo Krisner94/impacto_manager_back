@@ -49,10 +49,10 @@ dependency-check:
     PROJECT_NAME: "springboot-app"
   script:
     - /usr/share/dependency-check/bin/dependency-check.sh \
-        --project "$PROJECT_NAME" \
-        --scan . \
-        --format "HTML" \
-        --out dependency-check-report
+      --project "$PROJECT_NAME" \
+      --scan . \
+      --format "HTML" \
+      --out dependency-check-report
   artifacts:
     paths:
       - dependency-check-report
@@ -66,7 +66,7 @@ dependency-check:
 
 deploy-test:
   image: alpine:latest
-  stage: deploy
+  stage: deploy-test
   script:
     - echo "Deploying to test environment..."
     - ssh user@server "docker pull registry.gitlab.com/impacto-manager/back/impacto_manager_back:latest && docker-compose up -d"
