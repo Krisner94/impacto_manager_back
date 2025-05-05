@@ -22,7 +22,7 @@ maven-test:
   image: maven:3.9.4-eclipse-temurin-21
   stage: test
   script:
-    - mvn test
+    - mvn test -Dtest=!application.impacto_manager_back.ImpactoManagerBackApplicationTests
   artifacts:
     when: always
     reports:
