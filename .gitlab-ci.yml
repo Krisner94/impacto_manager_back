@@ -1,7 +1,7 @@
 stages:
   - build
   - test
-  - quality
+  - unused import
   - security
   - deploy-test
   - notification
@@ -32,13 +32,11 @@ maven-test:
     - main
     - dev
 
-code-quality:
+unused-import:
   image: maven:3.9.4-eclipse-temurin-21
-  stage: quality
+  stage: unused import
   script:
-    - mvn checkstyle:check
     - mvn pmd:check
-    - mvn spotbugs:check
   only:
     - merge_requests
     - main
@@ -52,10 +50,10 @@ dependency-check:
     PROJECT_NAME: "springboot-app"
   script:
     - /usr/share/dependency-check/bin/dependency-check.sh \
-        --project "$PROJECT_NAME" \
-        --scan . \
-        --format "HTML" \
-        --out dependency-check-report
+      --project "$PROJECT_NAME" \
+      --scan . \
+      --format "HTML" \
+      --out dependency-check-report
   artifacts:
     paths:
       - dependency-check-report

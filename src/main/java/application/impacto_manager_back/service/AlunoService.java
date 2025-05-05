@@ -1,15 +1,14 @@
 package application.impacto_manager_back.service;
 
+import application.impacto_manager_back.exceptions.CustomException;
+import application.impacto_manager_back.exceptions.Error;
 import application.impacto_manager_back.model.Aluno;
 import application.impacto_manager_back.repository.AlunoRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import static org.springframework.beans.BeanUtils.copyProperties;
 
 @Service
 @Transactional
@@ -23,7 +22,11 @@ public class AlunoService {
 	
 	public Aluno findById(Long id) {
 		return repository.findById(id)
-		  .orElseThrow(() -> new RuntimeException("Aluno não encontrado com id: " + id));
+			.orElseThrow(() -> new CustomException(
+				Error.builder()
+					.title("Erro de busca")
+					.message(String.format("Aluno com id %d não encontrado", id))
+					.build()));
 	}
 	
 	public List<Aluno> findByNomeOrCPF(String value) {
