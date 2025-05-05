@@ -7,9 +7,7 @@ import application.impacto_manager_back.config.openApi.DataDocs.FindById;
 import application.impacto_manager_back.config.openApi.DataDocs.FindByName;
 import application.impacto_manager_back.config.openApi.DataDocs.Update;
 import application.impacto_manager_back.model.Aluno;
-import application.impacto_manager_back.model.Turma;
 import application.impacto_manager_back.service.AlunoService;
-import application.impacto_manager_back.service.TurmaService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,7 +29,6 @@ import java.util.List;
 @Tag(name = "Aluno", description = "Endpoint para gerenciamento de alunos")
 public class AlunoController {
 	private final AlunoService service;
-	private final TurmaService turmaService;
 	
 	@FindAll
 	@GetMapping("")
