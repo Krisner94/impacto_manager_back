@@ -1,9 +1,9 @@
 package application.impacto_manager_back.config.openApi;
-    
-    import java.lang.annotation.ElementType;
-    import java.lang.annotation.Retention;
-    import java.lang.annotation.RetentionPolicy;
-    import java.lang.annotation.Target;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
     
     public interface DataDocs {
         @Target(ElementType.METHOD)

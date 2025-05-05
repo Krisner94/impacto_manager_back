@@ -1,8 +1,9 @@
 package application.impacto_manager_back.security.model;
 
-import lombok.*;
-import java.util.*;
-import java.time.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
