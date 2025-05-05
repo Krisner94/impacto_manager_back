@@ -80,13 +80,3 @@ deploy-test:
     - ssh user@server "docker pull registry.gitlab.com/impacto-manager/back/impacto_manager_back:latest && docker-compose up -d"
   only:
     - dev
-
-notifications:
-  image: curlimages/curl:latest
-  stage: notification
-  script:
-    - >
-      curl -X POST -H "Content-type: application/json"
-      --data '{"text":"Pipeline finalizada com sucesso!"}'
-      $SLACK_WEBHOOK_URL
-  when: always
