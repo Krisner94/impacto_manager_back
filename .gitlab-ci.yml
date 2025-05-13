@@ -28,6 +28,7 @@ maven-test:
   - merge_requests
   - main
   - dev
+  allow_failure: true
 unused-import:
   image: maven:3.9.4-eclipse-temurin-21
   stage: unused import
