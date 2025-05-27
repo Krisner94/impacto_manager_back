@@ -8,13 +8,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
 @Getter
+@Setter
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class AlunoDto {
     private Long id;
     private String nome;
@@ -25,6 +27,6 @@ public class AlunoDto {
     private Endereco endereco;
     private List<Responsavel> responsavel;
     private List<Turma> turmas;
-    
     private Pagamento pagamento;
 }
+

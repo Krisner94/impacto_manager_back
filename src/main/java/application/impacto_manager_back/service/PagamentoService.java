@@ -26,6 +26,10 @@ public class PagamentoService {
 			.build()));
 	}
 	
+	public List<Pagamento> findAllByIds(List<Long> ids) {
+		return repository.findAllById(ids);
+	}
+	
 	public Pagamento create(Pagamento pagamento) {
 		return repository.save(pagamento);
 	}
