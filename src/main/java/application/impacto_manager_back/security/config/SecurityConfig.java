@@ -7,7 +7,9 @@ import com.nimbusds.jose.proc.SecurityContext;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -44,12 +46,18 @@ public class SecurityConfig {
         // Converte a chave privada (formato PEM) para RSAPrivateKey
         return RsaKeyConverters.pkcs8().convert(privateKeyPem);
     }
-
+    
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
+    }
+    
+    
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(
-                auth -> auth.requestMatchers("/authenticate/**", "/user/register/**").permitAll()
+                auth -> auth.requestMatchers("/login/**", "/user/register/**", "/v3/api-docs/**").permitAll()
                     .anyRequest().authenticated()
             ).httpBasic(Customizer.withDefaults())
             .oauth2ResourceServer(
