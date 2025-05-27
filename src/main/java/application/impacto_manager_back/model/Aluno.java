@@ -61,4 +61,6 @@ public class Aluno implements Serializable {
 	)
 	@JsonIgnoreProperties({"alunos", "professores"})
 	private List<Turma> turmas = new ArrayList<>();
+	
+	private Long pagamentoId;
 }
