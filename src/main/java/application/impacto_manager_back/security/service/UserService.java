@@ -1,7 +1,7 @@
 package application.impacto_manager_back.security.service;
 
 import application.impacto_manager_back.security.model.User;
-import application.impacto_manager_back.security.model.UserDto;
+import application.impacto_manager_back.security.model.UserDTO;
 import application.impacto_manager_back.security.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ public class UserService {
 	}
 	
 	public User newUser(User user) {
-		UserDto build = UserDto.builder()
+		UserDTO build = UserDTO.builder()
 		  .username(user.getUsername())
 		  .password(passwordEncoder.encode(user.getPassword()))
 		  .role(user.getRole())

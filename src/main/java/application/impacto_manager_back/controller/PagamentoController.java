@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -54,7 +55,7 @@ public class PagamentoController {
 	
 	@Create
 	@PostMapping
-	public Pagamento create(Pagamento pagamento) {
+	public Pagamento create(@RequestBody Pagamento pagamento) {
 		try {
 			service.create(pagamento);
 			return ResponseEntity.status(HttpStatus.CREATED).body(pagamento).getBody();
@@ -65,7 +66,7 @@ public class PagamentoController {
 	
 	@Update
 	@PutMapping
-	public Pagamento update(Pagamento pagamento) {
+	public Pagamento update(@RequestBody Pagamento pagamento) {
 		try {
 			service.update(pagamento);
 			return ResponseEntity.ok(pagamento).getBody();
