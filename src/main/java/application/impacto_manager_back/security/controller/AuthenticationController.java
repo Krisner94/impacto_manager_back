@@ -1,4 +1,4 @@
-package application.impacto_manager_back.security.config.controller;
+package application.impacto_manager_back.security.controller;
 
 import application.impacto_manager_back.security.model.UserLogin;
 import application.impacto_manager_back.security.service.AuthenticationService;
