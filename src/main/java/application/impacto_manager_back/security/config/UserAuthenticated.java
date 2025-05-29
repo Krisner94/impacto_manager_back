@@ -2,6 +2,7 @@ package application.impacto_manager_back.security.config;
 
 import application.impacto_manager_back.security.model.User;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -36,7 +37,7 @@ public class UserAuthenticated implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(() -> "read");
+        return List.of(new SimpleGrantedAuthority(String.format("ROLE_%s", user.getRole())));
     }
 
     @Override

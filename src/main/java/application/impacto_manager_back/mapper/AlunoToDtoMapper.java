@@ -11,7 +11,5 @@ public interface AlunoToDtoMapper {
 	
 	AlunoDto alunoToAlunoDto(Aluno aluno);
 	
-	Aluno alunoDtoToAluno(AlunoDto alunoDto);
-	
 	List<AlunoDto> alunosToAlunoDtos(List<Aluno> alunos);
 }
