@@ -50,7 +50,9 @@ public class ProfessorController {
 	@Update
 	@PutMapping
 	public Professor update(@RequestBody Professor professor) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(service.update(professor.getId(), professor)).getBody();
+		return ResponseEntity.status(HttpStatus.CREATED)
+			.body(service.update(professor.getId(), professor))
+			.getBody();
 	}
 	
 	@Delete
