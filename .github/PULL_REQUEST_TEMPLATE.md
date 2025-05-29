@@ -8,9 +8,10 @@ Closes #<Número da Issue>
 
 ## Tipo de alteração
 
-- [ ] Bugfix
 - [ ] Nova funcionalidade
+- [ ] Correção
 - [ ] Refatoração
+- [ ] Teste
 - [ ] Documentação
 - [ ] Outro (especifique):
 
@@ -18,5 +19,5 @@ Closes #<Número da Issue>
 
 - [ ] O código segue o padrão do projeto
 - [ ] Foram adicionados testes
-- [ ] Não quebrou nada existente
+- [ ] Não quebrou código existente
 - [ ] Está vinculado à issue correta
