@@ -4,7 +4,7 @@ Descreva brevemente o que foi feito neste MR.
 
 ## Issue Relacionada
 
-Closes #[Número da Issue]
+Closes #<Número da Issue>
 
 ## Tipo de alteração
 
